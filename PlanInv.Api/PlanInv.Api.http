@@ -1,0 +1,6 @@
+@PlanInv.Api_HostAddress = http://localhost:5028
+
+GET {{PlanInv.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
