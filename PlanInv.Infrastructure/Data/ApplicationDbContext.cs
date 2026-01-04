@@ -1,8 +1,5 @@
-﻿using PlanInv.Domain.Entities; 
+﻿using PlanInv.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-
 namespace PlanInv.Infrastructure.Data;
 
 public class ApplicationDbContext : DbContext
@@ -28,30 +25,24 @@ public class ApplicationDbContext : DbContext
 
 
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(
+        CancellationToken cancellationToken = default)
     {
-        // Criar o baseENtity
-        
-        var entries = ChangeTracker.Entries()
-            .Where(e => e.Entity is BaseEntity && 
-                       (e.State == EntityState.Added || e.State == EntityState.Modified));
+        var entries = ChangeTracker
+            .Entries<BaseEntity>()
+            .Where(e => e.State == EntityState.Added ||
+                        e.State == EntityState.Modified);
 
         foreach (var entry in entries)
         {
-            var entity = (BaseEntity)entry.Entity;
-
             if (entry.State == EntityState.Added)
-            {
-                entity.CreateAt = DateTime.UtcNow;
-            }
+                entry.Entity.CreatedAt = DateTime.UtcNow;
 
             if (entry.State == EntityState.Modified)
-            {
-                entity.UpdateAt = DateTime.UtcNow;
-            }
+                entry.Entity.UpdatedAt = DateTime.UtcNow;
         }
-        
 
         return await base.SaveChangesAsync(cancellationToken);
     }
+
 }
