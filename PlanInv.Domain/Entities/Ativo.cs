@@ -18,7 +18,7 @@ public class Ativo : BaseEntity
 
     // referente ao EF core
     protected Ativo () {}
-    public Ativo(string ticker, ETipoAtivo tipo, decimal cotacaoAtual)
+    public Ativo(string ticker, ETipoAtivo tipo, string cnpj, decimal cotacaoAtual)
     {
         Validar(ticker, cotacaoAtual);
 
