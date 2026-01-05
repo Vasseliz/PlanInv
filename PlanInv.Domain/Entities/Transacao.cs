@@ -7,19 +7,19 @@ namespace PlanInv.Domain.Entities;
 public class Transacao : BaseEntity
 {
     public int PosicaoId { get; private set; }
-
     public Posicao Posicao { get; private set; } = null!;
+
+    public int CorretoraId { get; private set; }
+    public Corretora Corretora { get; private set; } = null!;
 
     public DateTime DataTransacao { get; private set; }
     public ETipoTransacao Tipo { get; private set; }
     public int QuantidadeCotas { get; private set; }
     public decimal PrecoUnitario { get; private set; }
     public decimal Custos { get; private set; }
-    public ECorretora Corretora { get; private set; }
     public string? Observacoes { get; private set; }
     public decimal ValorBruto => QuantidadeCotas * PrecoUnitario;
     public decimal ValorLiquido => CalcularValorLiquido();
-
 
     protected Transacao() { }
 
@@ -29,7 +29,7 @@ public class Transacao : BaseEntity
         int quantidadeCotas,
         decimal precoUnitario,
         decimal custos,
-        ECorretora corretora,
+        int corretoraId,
         DateTime? dataTransacao = null,
         string? observacoes = null)
     {
@@ -40,7 +40,7 @@ public class Transacao : BaseEntity
         QuantidadeCotas = quantidadeCotas;
         PrecoUnitario = precoUnitario;
         Custos = custos;
-        Corretora = corretora;
+        CorretoraId = corretoraId;
         DataTransacao = dataTransacao ?? DateTime.Now;
         Observacoes = observacoes;
     }

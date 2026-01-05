@@ -9,11 +9,12 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    //public DbSet<Usuario> Usuarios { get; set; } = null!;
-    //public DbSet<Ativo> Ativos { get; set; } = null!;
-    //public DbSet<Posicao> Posicoes { get; set; } = null!;
-    //public DbSet<Transacao> Transacoes { get; set; } = null!;
-    //public DbSet<Provento> Proventos { get; set; } = null!;
+    public DbSet<Usuario> Usuarios { get; set; } = null!;
+    public DbSet<Ativo> Ativos { get; set; } = null!;
+    public DbSet<Posicao> Posicoes { get; set; } = null!;
+    public DbSet<Transacao> Transacoes { get; set; } = null!;
+    public DbSet<Provento> Proventos { get; set; } = null!;
+    public DbSet<Corretora> Corretoras { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
