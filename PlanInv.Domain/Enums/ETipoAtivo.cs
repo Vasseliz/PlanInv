@@ -1,5 +1,7 @@
 ﻿namespace PlanInv.Domain.Enums;
 
-internal enum ETipoAtivo
+public enum ETipoAtivo
 {
+    Fiis = 1,
+    Acoes = 2
 }
