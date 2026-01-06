@@ -31,4 +31,3 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
     }
 }
 
-// ainda temos que  definir no db context

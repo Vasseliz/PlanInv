@@ -15,6 +15,9 @@ public class Usuario : BaseEntity
     public Cpf Cpf { get; private set; }
     public decimal MetaDeAportesMensal { get; private set; }
 
+    private readonly List<Posicao> _posicoes = new();
+    public IReadOnlyCollection<Posicao> Posicoes => _posicoes.AsReadOnly();
+
     // referente ao EF core
     protected Usuario() { }
 

@@ -12,6 +12,7 @@ public class Provento : BaseEntity
     public DateTime DataCom { get; private set; } // data "com" - último dia para ter direito
     public int QuantidadeCotas { get; private set; } // Quantidade de cotas que receberam o provento
     public decimal ValorPorCota { get; private set; }
+    public Posicao Posicao { get; private set; } = null!;
     public decimal ValorBruto { get; private set; }
     public decimal Imposto { get; private set; }
     public string? Observacoes { get; private set; }
