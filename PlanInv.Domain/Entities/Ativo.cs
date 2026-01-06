@@ -16,6 +16,9 @@ public class Ativo : BaseEntity
     public Cnpj Cnpj { get; private set; }
     public decimal CotacaoAtual { get; private set; }
 
+    private readonly List<Posicao> _posicoes = new();
+    public IReadOnlyCollection<Posicao> Posicoes => _posicoes.AsReadOnly();
+
     // referente ao EF core
     protected Ativo () {}
     public Ativo(string ticker, ETipoAtivo tipo, string cnpj, decimal cotacaoAtual)

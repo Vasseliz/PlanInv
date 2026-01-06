@@ -6,19 +6,17 @@ namespace PlanInv.Domain.Entities;
 public class Corretora : BaseEntity
 {
     public string Nome { get; private set; } = string.Empty;
-    public string? Site { get; private set; }
     public bool Ativa { get; private set; }
 
     private readonly List<Transacao> _transacoes = new();
     public IReadOnlyCollection<Transacao> Transacoes => _transacoes.AsReadOnly();
     protected Corretora() { }
 
-    public Corretora(string nome, string? site = null)
+    public Corretora(string nome)
     {
         ValidarNome(nome);
 
         Nome = nome;
-        Site = site;
         Ativa = true;
     }
 
@@ -28,10 +26,6 @@ public class Corretora : BaseEntity
         Nome = novoNome;
     }
 
-    public void AlterarSite(string? novoSite)
-    {
-        Site = novoSite;
-    }
 
     public void Desativar()
     {
