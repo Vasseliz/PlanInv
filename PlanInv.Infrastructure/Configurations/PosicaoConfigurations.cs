@@ -13,7 +13,18 @@ namespace PlanInv.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Posicao> builder)
         {
+            builder.ToTable("Posicoes");
+
             builder.HasKey(p => p.Id);
+
+            builder.Property(p => p.Id)
+                .ValueGeneratedOnAdd();
+
+            builder.Property(p => p.CreatedAt)
+                .IsRequired();
+
+            builder.Property(p => p.UpdatedAt)
+                .IsRequired(false);
 
             builder.Property(p => p.Quantidade)
                 .IsRequired();
@@ -33,13 +44,14 @@ namespace PlanInv.Infrastructure.Configurations
                 .HasForeignKey(t => t.PosicaoId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Property(p => p.Ativa)
+                .IsRequired()
+                .HasDefaultValue(true);
+
             builder.HasMany(p => p.Proventos)
                 .WithOne(pr => pr.Posicao)
                 .HasForeignKey(pr => pr.PosicaoId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Property(p => p.Quantidade)
-                .IsRequired();
 
             builder.Property(p => p.PrecoMedio)
                 .HasPrecision(18, 2)
@@ -51,13 +63,30 @@ namespace PlanInv.Infrastructure.Configurations
 
             builder.Property(p => p.DataPrimeiraCompra)
                 .HasConversion(
-                    v => v,
-                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+                    v => v.ToUniversalTime(), 
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc) 
+                )
+                .IsRequired();
 
             builder.Property(p => p.DataUltimaTransacao)
                 .HasConversion(
-                    v => v,
-                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+                    v => v.ToUniversalTime(),
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                )
+                .IsRequired();
+
+            builder.Ignore(p => p.ValorAtual);
+            builder.Ignore(p => p.PossuiCotas);
+            builder.Ignore(p => p.QuantidadeTransacoes);
+            builder.Ignore(p => p.TotalProventosRecebidos);
+
+            builder.Navigation(p => p.Transacoes)
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .AutoInclude(false); ;
+
+            builder.Navigation(p => p.Proventos)
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .AutoInclude(false);
 
 
         }

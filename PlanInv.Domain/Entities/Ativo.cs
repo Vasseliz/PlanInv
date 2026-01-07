@@ -28,7 +28,7 @@ public class Ativo : BaseEntity
         Ticker = ticker.ToUpper();
         Tipo = tipo;
         Cnpj = new Cnpj(cnpj);
-        CotacaoAtual = CotacaoAtual;
+        CotacaoAtual = cotacaoAtual;
     }
 
     public void AtualizarCotacao(decimal newCotacao)

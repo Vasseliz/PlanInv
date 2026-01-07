@@ -16,6 +16,12 @@ namespace PlanInv.Infrastructure.Configurations
             builder.Property(t => t.Id)
                 .ValueGeneratedOnAdd();
 
+            builder.Property(p => p.CreatedAt)
+                .IsRequired();
+
+            builder.Property(p => p.UpdatedAt)
+                .IsRequired(false);
+
             builder.Property(t => t.PosicaoId)
                 .IsRequired();
 
@@ -23,6 +29,10 @@ namespace PlanInv.Infrastructure.Configurations
                 .IsRequired();
 
             builder.Property(t => t.DataTransacao)
+                .HasConversion(
+                    v => v.ToUniversalTime(),
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                )
                 .IsRequired();
 
             builder.Property(t => t.Tipo)
@@ -48,12 +58,12 @@ namespace PlanInv.Infrastructure.Configurations
             builder.Ignore(t => t.ValorLiquido);
 
             builder.HasOne(t => t.Posicao)
-                .WithMany()
+                .WithMany(p => p.Transacoes) 
                 .HasForeignKey(t => t.PosicaoId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(t => t.Corretora)
-                .WithMany()
+                .WithMany(c => c.Transacoes) 
                 .HasForeignKey(t => t.CorretoraId)
                 .OnDelete(DeleteBehavior.Restrict);
 

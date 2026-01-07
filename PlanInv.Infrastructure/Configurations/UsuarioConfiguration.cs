@@ -9,25 +9,48 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
 {
     public void Configure(EntityTypeBuilder<Usuario> builder)
     {
-        builder.HasKey(u => u.Id);
+        builder.ToTable("Usuarios");
 
-        // Configura propriedades simples
+        builder.HasKey(u => u.Id);
+        builder.Property(u => u.Id)
+            .ValueGeneratedOnAdd();
+
+        builder.Property(u => u.CreatedAt)
+            .IsRequired();
+
+        builder.Property(u => u.UpdatedAt)
+            .IsRequired(false);
+
         builder.Property(u => u.Nome)
             .IsRequired()
-            .HasMaxLength(100); 
+            .HasMaxLength(100);
+
+        builder.Property(u => u.Idade)
+            .IsRequired();
 
         builder.Property(u => u.Cpf)
             .HasConversion(
-                cpfObj => cpfObj.Numero,
-
-                cpfString => new Cpf(cpfString)
+                cpf => cpf.Numero,
+                numero => new Cpf(numero)
             )
-            .HasColumnName("Cpf") 
-            .HasMaxLength(11)  
+            .HasColumnName("Cpf")
+            .HasMaxLength(11)
             .IsRequired();
 
+        builder.HasIndex(u => u.Cpf)
+            .IsUnique();
+
         builder.Property(u => u.MetaDeAportesMensal)
-            .HasPrecision(18, 2);
+            .HasPrecision(18, 2)
+            .IsRequired();
+
+        builder.HasMany(u => u.Posicoes)
+            .WithOne(p => p.Usuario)
+            .HasForeignKey(p => p.UsuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Navigation(u => u.Posicoes)
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude(false);
     }
 }
-

@@ -50,7 +50,7 @@ public class Posicao : BaseEntity
         Quantidade = quantidadeInicial;
         PrecoMedio = precoInicial;
         ValorInvestido = quantidadeInicial * precoInicial;
-        DataPrimeiraCompra = dataPrimeiraCompra ?? DateTime.Now;
+        DataPrimeiraCompra = dataPrimeiraCompra ?? DateTime.UtcNow;
         DataUltimaTransacao = DataPrimeiraCompra;
         Ativa = true;
     }
