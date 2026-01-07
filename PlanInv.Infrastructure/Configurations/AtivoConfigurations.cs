@@ -22,6 +22,12 @@ public class AtivoConfigurations : IEntityTypeConfiguration<Ativo>
             .IsRequired()
             .HasMaxLength(10);
 
+        builder.Property(a => a.CreatedAt)
+            .IsRequired();
+
+        builder.Property(a => a.UpdatedAt)
+            .IsRequired(false);
+
         // Índice único: impede duplicação de tickers
         builder.HasIndex(a => a.Ticker)
             .IsUnique();

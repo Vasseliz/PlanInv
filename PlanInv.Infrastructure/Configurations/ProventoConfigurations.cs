@@ -19,14 +19,28 @@ namespace PlanInv.Infrastructure.Configurations
             builder.Property(p => p.PosicaoId)
                 .IsRequired();
 
+            builder.Property(p => p.CreatedAt)
+                .IsRequired();
+
+            builder.Property(p => p.UpdatedAt)
+                .IsRequired(false);
+
             builder.Property(p => p.Tipo)
                 .HasConversion<int>()
                 .IsRequired();
 
             builder.Property(p => p.DataPagamento)
+                .HasConversion(
+                    v => v.ToUniversalTime(),
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                )
                 .IsRequired();
 
             builder.Property(p => p.DataCom)
+                .HasConversion(
+                    v => v.ToUniversalTime(),
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                )
                 .IsRequired();
 
             builder.Property(p => p.QuantidadeCotas)
@@ -51,7 +65,7 @@ namespace PlanInv.Infrastructure.Configurations
             builder.Ignore(p => p.ValorLiquido);
 
             builder.HasOne(p => p.Posicao)
-                .WithMany()
+                .WithMany(pos => pos.Proventos)
                 .HasForeignKey(p => p.PosicaoId)
                 .OnDelete(DeleteBehavior.Restrict);
 

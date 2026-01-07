@@ -9,7 +9,17 @@ namespace PlanInv.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Corretora> builder)
         {
+            builder.ToTable("Corretoras"); 
+
             builder.HasKey(c => c.Id);
+            builder.Property(c => c.Id)
+                .ValueGeneratedOnAdd();
+
+            builder.Property(c => c.CreatedAt)
+                .IsRequired();
+
+            builder.Property(c => c.UpdatedAt)
+                .IsRequired(false);
             builder.Property(c => c.Nome)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -23,7 +33,9 @@ namespace PlanInv.Infrastructure.Configurations
                 .WithOne(t => t.Corretora)
                 .HasForeignKey(t => t.CorretoraId)
                 .OnDelete(DeleteBehavior.Restrict);
-
+            builder.Navigation(c => c.Transacoes)
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .AutoInclude(false);
         }
     }
 }
