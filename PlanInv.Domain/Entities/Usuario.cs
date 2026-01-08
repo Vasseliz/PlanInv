@@ -16,7 +16,25 @@ public class Usuario : BaseEntity
     public decimal MetaDeAportesMensal { get; private set; }
 
     private readonly List<Posicao> _posicoes = new();
+
     public IReadOnlyCollection<Posicao> Posicoes => _posicoes.AsReadOnly();
+
+    public bool Ativo { get; private set; } = true;
+    public void Desativar()
+    {
+        if (!Ativo)
+            throw new InvalidOperationException("Usuário já está desativado");
+
+        Ativo = false;
+    }
+
+    public void Ativar()
+    {
+        if (Ativo)
+            throw new InvalidOperationException("Usuário já está ativo");
+
+        Ativo = true;
+    }
 
     // referente ao EF core
     protected Usuario() { }
@@ -33,6 +51,9 @@ public class Usuario : BaseEntity
 
     public void AtualizarMetaAporte(decimal newMeta)
     {
+        if (!Ativo)
+            throw new DomainException("Não é possível atualizar usuário desativado");
+
         if (newMeta <= 0)
             throw new DomainException("A meta de aporte não pode ser igual a 0 ou menor que 0.");
         MetaDeAportesMensal = newMeta;
@@ -40,6 +61,9 @@ public class Usuario : BaseEntity
 
     public void CorrigirNome(string novoNome)
     {
+        if (!Ativo)
+            throw new DomainException("Não é possível atualizar usuário desativado");
+
         if (string.IsNullOrWhiteSpace(novoNome))
             throw new DomainException("O Nome não pode ser vazio.");
 
