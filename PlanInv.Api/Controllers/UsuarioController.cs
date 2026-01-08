@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlanInv.Api.Requests;
 using PlanInv.Application.Dtos;
+using PlanInv.Application.Interfaces;
 
 namespace PlanInv.Api.Controllers
 {
@@ -21,14 +22,14 @@ namespace PlanInv.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var usuarioDto = await _service.CreateUsuarioAsync(request.Nome, request.Idade, request.Cpf, 
+            var usuarioDto = await _service.CreateUsuarioAsync(request.Nome, request.Idade, request.Cpf,
                 request.MetaDeAportesMensal);
 
             return CreatedAtAction(nameof(GetUsuarioById), new { id = usuarioDto.Id }, usuarioDto);
         }
 
         [HttpGet("{id:int}")]  
-        public async Task<ActionResult<UsuarioDto>> GetUsuarioById(int id)
+        public async Task<ActionResult<UsuarioResponseDto>> GetUsuarioById(int id)
         {
             var usuario = await _service.GetByIdAsync(id);
             
