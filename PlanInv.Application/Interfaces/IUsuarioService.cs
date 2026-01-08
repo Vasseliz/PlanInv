@@ -10,6 +10,6 @@ namespace PlanInv.Application.Interfaces;
 public interface IUsuarioService
 {
     Task<UsuarioDto> CreateUsuarioAsync(string nome, int idade, string cpf, decimal metaDeAportesMensal);
-    Task<UsuarioResponse> GetByIdAsync(int id);
+    Task<UsuarioResponseDto> GetByIdAsync(int id);
 
 }
