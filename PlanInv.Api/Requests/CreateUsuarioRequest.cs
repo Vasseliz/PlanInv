@@ -13,7 +13,7 @@ public class CreateUsuarioRequest
 
     [Required(ErrorMessage = "Meta de aporte mensal é obrigatória")]
     [Range(0.01, double.MaxValue, ErrorMessage = "Meta deve ser maior que zero" )]
-    public decimal MetaAporteMensal { get; set; }
+    public decimal MetaDeAportesMensal { get; set; }
 
     [Required(ErrorMessage = "Idade é obrigatório")]
     public int Idade { get; set; }
