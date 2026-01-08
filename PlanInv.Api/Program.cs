@@ -1,6 +1,7 @@
-using PlanInv.Api.Extensions;
-using PlanInv.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using PlanInv.Api.Extensions;
+using PlanInv.Api.Middlewares;
+using PlanInv.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,10 +55,9 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty; 
     });
 }
-
+app.UseMiddleware<ExceptionHandlingMiddleware>(); 
 app.UseHttpsRedirection();
-app.UseCors("AllowAll"); 
-app.UseAuthorization();  
+app.UseCors("AllowAll");  
 app.MapControllers();
 
 app.Run();
