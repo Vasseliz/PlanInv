@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PlanInv.Domain.ValueObjects; //cpf
+using PlanInv.Domain.ValueObjects; 
 namespace PlanInv.Domain.Entities;
 
 public class Usuario : BaseEntity
@@ -19,21 +19,21 @@ public class Usuario : BaseEntity
 
     public IReadOnlyCollection<Posicao> Posicoes => _posicoes.AsReadOnly();
 
-    public bool Ativo { get; private set; } = true;
+    public bool UsuarioAtivo { get; private set; } = true;
     public void Desativar()
     {
-        if (!Ativo)
+        if (!UsuarioAtivo)
             throw new InvalidOperationException("Usuário já está desativado");
 
-        Ativo = false;
+        UsuarioAtivo = false;
     }
 
     public void Ativar()
     {
-        if (Ativo)
+        if (UsuarioAtivo)
             throw new InvalidOperationException("Usuário já está ativo");
 
-        Ativo = true;
+        UsuarioAtivo = true;
     }
 
     // referente ao EF core
@@ -51,7 +51,7 @@ public class Usuario : BaseEntity
 
     public void AtualizarMetaAporte(decimal newMeta)
     {
-        if (!Ativo)
+        if (!UsuarioAtivo)
             throw new DomainException("Não é possível atualizar usuário desativado");
 
         if (newMeta <= 0)
@@ -61,7 +61,7 @@ public class Usuario : BaseEntity
 
     public void CorrigirNome(string novoNome)
     {
-        if (!Ativo)
+        if (!UsuarioAtivo)
             throw new DomainException("Não é possível atualizar usuário desativado");
 
         if (string.IsNullOrWhiteSpace(novoNome))
@@ -85,5 +85,3 @@ public class Usuario : BaseEntity
 
 }
 
-
-// ainda temos que  definir no db context a questao do CPF. Foi criado uma nova pasta de configurations dentro da PlanInv.Infrastructure

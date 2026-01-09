@@ -18,6 +18,7 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Usuario>().HasQueryFilter(u => u.UsuarioAtivo);
         // Aplicar todas as configurações do assembly
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
