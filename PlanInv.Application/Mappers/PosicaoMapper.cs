@@ -11,7 +11,7 @@ internal class PosicaoMapper
             Id = posicao.Id,
             Quantidade = posicao.Quantidade,
             PrecoMedio = posicao.PrecoMedio,
-            ValorTotal = posicao.Quantidade * posicao.PrecoMedio,
+            ValorTotal = posicao.ValorAtual,
             Ticker = posicao.Ativo.Ticker,
             TipoAtivo = posicao.Ativo.Tipo.ToString()
         };
