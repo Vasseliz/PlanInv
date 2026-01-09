@@ -1,4 +1,5 @@
-﻿using PlanInv.Application.Dtos;
+﻿using PlanInv.Application.Requests;
+using PlanInv.Application.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,10 @@ namespace PlanInv.Application.Interfaces;
 
 public interface IUsuarioService
 {
-    Task<UsuarioDto> CreateUsuarioAsync(string nome, int idade, string cpf, decimal metaDeAportesMensal);
-    Task<UsuarioResponseDto> GetByIdAsync(int id);
+    Task<UsuarioDto> CreateUsuarioAsync(CreateUsuarioRequest request); 
+    Task<UsuarioResponseDto?> GetByIdAsync(int id);
+    Task<UsuarioDto?> UpdateUsuarioAsync(int id, UpdateUsuarioRequest request); 
+    Task<UsuarioDto?> DesativarUsuarioAsync(int id);  
+    Task<UsuarioDto?> AtivarUsuarioAsync(int id);     
 
 }
