@@ -1,6 +1,7 @@
 ﻿using PlanInv.Application.Requests;
 using PlanInv.Application.Dtos;
 using PlanInv.Application.Interfaces;
+using PlanInv.Application.Mappers; 
 using PlanInv.Domain.Entities;
 using PlanInv.Domain.Interfaces;
 
@@ -21,9 +22,10 @@ public class UsuarioService : IUsuarioService
             request.Idade,
             request.Cpf,
             request.MetaDeAportesMensal);
+
         await _repository.AddAsync(usuario);
 
-        return MapToDto(usuario);
+        return UsuarioMapper.ToDto(usuario); 
     }
 
     public async Task<UsuarioResponseDto?> GetByIdAsync(int id)
@@ -33,26 +35,7 @@ public class UsuarioService : IUsuarioService
         if (usuario == null)
             return null;
 
-        return new UsuarioResponseDto
-        {
-            Id = usuario.Id,
-            Nome = usuario.Nome,
-            Idade = usuario.Idade,
-            Cpf = usuario.Cpf.Numero,
-            MetaDeAportesMensal = usuario.MetaDeAportesMensal,
-            CreatedAt = usuario.CreatedAt,
-            UpdatedAt = usuario.UpdatedAt,
-            UsuarioAtivo = usuario.UsuarioAtivo,
-            Posicoes = usuario.Posicoes.Select(p => new PosicaoDto
-            {
-                Id = p.Id,
-                Quantidade = p.Quantidade,
-                PrecoMedio = p.PrecoMedio,
-                ValorTotal = p.Quantidade * p.PrecoMedio,
-                Ticker = p.Ativo.Ticker,
-                TipoAtivo = p.Ativo.Tipo.GetType().Name 
-            }).ToList()
-        };
+        return UsuarioMapper.ToResponseDto(usuario); 
     }
 
     public async Task<UsuarioDto?> UpdateUsuarioAsync(int id, UpdateUsuarioRequest request)
@@ -70,7 +53,7 @@ public class UsuarioService : IUsuarioService
 
         await _repository.UpdateAsync(usuario);
 
-        return MapToDto(usuario);
+        return UsuarioMapper.ToDto(usuario); 
     }
 
     public async Task<UsuarioDto?> DesativarUsuarioAsync(int id)
@@ -83,10 +66,8 @@ public class UsuarioService : IUsuarioService
         usuario.Desativar();
         await _repository.UpdateAsync(usuario);
 
-        return MapToDto(usuario);
+        return UsuarioMapper.ToDto(usuario); 
     }
-
-
 
     public async Task<UsuarioDto?> AtivarUsuarioAsync(int id)
     {
@@ -96,27 +77,12 @@ public class UsuarioService : IUsuarioService
             return null;
 
         if (usuario.UsuarioAtivo)
-            return MapToDto(usuario);
+            return UsuarioMapper.ToDto(usuario); 
 
         usuario.Ativar();
         await _repository.UpdateAsync(usuario);
 
-        return MapToDto(usuario);
+        return UsuarioMapper.ToDto(usuario); 
     }
 
-
-    private static UsuarioDto MapToDto(Usuario usuario)
-    {
-        return new UsuarioDto
-        {
-            Id = usuario.Id,
-            Nome = usuario.Nome,
-            Idade = usuario.Idade,
-            Cpf = usuario.Cpf.Numero,
-            MetaDeAportesMensal = usuario.MetaDeAportesMensal,
-            UsuarioAtivo = usuario.UsuarioAtivo,
-            CreatedAt = usuario.CreatedAt,
-            UpdatedAt = usuario.UpdatedAt,
-        };
-    }
 }
