@@ -1,6 +1,10 @@
-﻿using PlanInv.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using PlanInv.Application.Interfaces;
+using PlanInv.Application.Services;
+using PlanInv.Domain.Interfaces;
+using PlanInv.Infrastructure.Data;
+using PlanInv.Infrastructure.Repositories;
 
 namespace PlanInv.Api.Extensions;
 
@@ -15,10 +19,8 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString, sqlServerOptions =>
             {
-                // Define onde ficam as Migrations
                 sqlServerOptions.MigrationsAssembly("PlanInv.Infrastructure");
 
-                // Retry automático em caso de falha
                 sqlServerOptions.EnableRetryOnFailure(
                     maxRetryCount: 3,
                     maxRetryDelay: TimeSpan.FromSeconds(5),
@@ -29,39 +31,32 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    /// <summary>
-    /// Registra os Repositories (será preenchido conforme criarmos)
-    /// </summary>
+
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        // Exemplo:
-        // services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-        // services.AddScoped<IAtivoRepository, AtivoRepository>();
+
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
 
         return services;
     }
 
-    /// <summary>
-    /// Registra os Services da camada Application (será preenchido conforme criarmos)
-    /// </summary>
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
 
-        // Exemplo:
-        // services.AddScoped<IUsuarioService, UsuarioService>();
-        // services.AddScoped<IAtivoService, AtivoService>();
+
+        services.AddScoped<IUsuarioService, UsuarioService>();
+
 
         return services;
     }
 
-    /// <summary>
-    /// Configura CORS para Angular
-    /// </summary>
+
     public static IServiceCollection AddCorsConfiguration(this IServiceCollection services)
     {
         services.AddCors(options =>
         {
-            // Política para desenvolvimento (permite tudo temporariamente)
+
             options.AddPolicy("AllowAll", policy =>
             {
                 policy
@@ -75,9 +70,6 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    /// <summary>
-    /// Configura Swagger com documentação melhorada
-    /// </summary>
     public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
