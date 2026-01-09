@@ -9,8 +9,11 @@ namespace PlanInv.Application.Dtos;
 public class UsuarioDto
 {
     public int Id { get; set; }
-    public string Nome { get; set; }
+    public required string Nome { get; set; }
     public int Idade{ get; set; }
-    public string Cpf { get; set; }
+    public required string Cpf { get; set; }
     public decimal MetaDeAportesMensal { get; set; }
+    public bool UsuarioAtivo { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 }
