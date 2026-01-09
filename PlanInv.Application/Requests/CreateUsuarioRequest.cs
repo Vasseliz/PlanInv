@@ -1,15 +1,15 @@
 ﻿using PlanInv.Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 
-namespace PlanInv.Api.Requests;
+namespace PlanInv.Application.Requests;
 
 public class CreateUsuarioRequest
 {
     [Required(ErrorMessage = "Nome é obrigatório")]
-    public string Nome { get; set; }
+    public required string Nome { get; set; }
 
     [Required(ErrorMessage = "CPF é obrigatório")]
-    public string Cpf { get; set; }
+    public required string Cpf { get; set; }
 
     [Required(ErrorMessage = "Meta de aporte mensal é obrigatória")]
     [Range(0.01, double.MaxValue, ErrorMessage = "Meta deve ser maior que zero" )]
