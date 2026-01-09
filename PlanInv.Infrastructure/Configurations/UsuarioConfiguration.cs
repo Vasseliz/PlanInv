@@ -37,6 +37,11 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
             .HasMaxLength(11)
             .IsRequired();
 
+
+        builder.Property(u => u.UsuarioAtivo)
+            .IsRequired()
+            .HasDefaultValue(true);
+
         builder.HasIndex(u => u.Cpf)
             .IsUnique();
 
