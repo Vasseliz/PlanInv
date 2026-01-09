@@ -46,7 +46,6 @@ public class UsuarioRepository(ApplicationDbContext context) : IUsuarioRepositor
     public async Task<List<Usuario>> GetAllAsync()
     {
         return await _context.Usuarios
-            .Include(u => u.Posicoes)
             .ToListAsync();
     }
 
