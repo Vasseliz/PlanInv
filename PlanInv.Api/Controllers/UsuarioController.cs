@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PlanInv.Api.Requests;
+using PlanInv.Application.Requests;
 using PlanInv.Application.Dtos;
 using PlanInv.Application.Interfaces;
 
@@ -17,13 +17,12 @@ namespace PlanInv.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UsuarioDto>> CreateUsuario([FromBody] CreateUsuarioRequest request)
+        public async Task<ActionResult<UsuarioDto>> CreateUsuario(CreateUsuarioRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var usuarioDto = await _service.CreateUsuarioAsync(request.Nome, request.Idade, request.Cpf,
-                request.MetaDeAportesMensal);
+            var usuarioDto = await _service.CreateUsuarioAsync(request);
 
             return CreatedAtAction(nameof(GetUsuarioById), new { id = usuarioDto.Id }, usuarioDto);
         }
@@ -37,6 +36,47 @@ namespace PlanInv.Api.Controllers
                 return NotFound(new { error = $"Usuário com ID {id} não encontrado" });
 
             return Ok(usuario);
+        }
+
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult<UsuarioDto>> UpdateUsuario(
+    int id, UpdateUsuarioRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!request.TemAlgumCampo())
+                return BadRequest(new { error = "Nenhum campo para atualizar" });
+
+            var usuarioDto = await _service.UpdateUsuarioAsync(id, request);
+
+            if (usuarioDto == null)
+                return NotFound(new { error = $"Usuário com ID {id} não encontrado" });
+
+            return Ok(usuarioDto);
+        }
+
+        [HttpPatch("{id:int}/desativar")]
+        public async Task<ActionResult<UsuarioDto>> DesativarUsuario(int id)
+        {
+            var usuarioDto = await _service.DesativarUsuarioAsync(id);
+
+            if (usuarioDto == null)
+                return NotFound(new { error = $"Usuário com ID {id} não encontrado" });
+
+            return Ok(usuarioDto);
+        }
+
+
+        [HttpPatch("{id:int}/ativar")]
+        public async Task<ActionResult<UsuarioDto>> AtivarUsuario(int id)
+        {
+            var usuarioDto = await _service.AtivarUsuarioAsync(id);
+
+            if (usuarioDto == null)
+                return NotFound(new { error = $"Usuário com ID {id} não encontrado" });
+
+            return Ok(usuarioDto);
         }
     }
 }
