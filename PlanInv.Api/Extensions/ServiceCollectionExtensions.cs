@@ -36,6 +36,7 @@ public static class ServiceCollectionExtensions
     {
 
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<IAtivoRepository, AtivoRepository>();
 
 
         return services;
@@ -46,6 +47,7 @@ public static class ServiceCollectionExtensions
 
 
         services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddScoped<IAtivoService, AtivoService>();
 
 
         return services;
